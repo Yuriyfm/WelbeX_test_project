@@ -1,5 +1,4 @@
 # WelbeX_test_project
-#О проекте
 Задание - https://faint-adasaurus-4bc.notion.site/web-Python-adf33211e9cc4d6b9ec2c0c619ecab31
 
 ## Выполнено:
