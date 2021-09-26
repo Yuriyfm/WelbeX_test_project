@@ -1,0 +1,69 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+{% block content %}
+<div class="container">
+<div class="row col-6 pb-3">
+    <form method="get" id="filter_form" action="{% url 'main:filter_methods' %}">
+        <h5>Выберите столбец:</h5>
+        {{ filter_form.column_name }}
+        <h5>Выберите метод фильтрации:</h5>
+        {{ filter_form.filter_method }}
+        <h5>Введите значение:</h5>
+        {{ filter_form.value }} <br>
+        <button class="btn btn-success" type="submit">Применить фильтр</button>
+    </form>
+</div>
+<div class="container" id="refresh">
+    <table id="myTable" class="demotable table table-striped table-bordered">
+    <thead class="table-primary">
+        <tr>
+        <th scope="col" class="text-center">Дата</th>
+        <th scope="col" class="text-center">Название</th>
+        <th scope="col" class="text-center">Количество</th>
+        <th scope="col" class="text-center">Расстояние</th>
+        </tr>
+    </thead>
+    <tbody class="table-secondary">
+        {% for rows in page_rows %}
+        <tr class="text-center">
+        <td>{{ rows.date }}</td>
+        <td>{{ rows.title }}</td>
+        <td>{{ rows.quantity }}</td>
+        <td>{{ rows.distance }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {# Пагинация, если не применены фильтры #}
+        {% if page.has_previous and all == '' %}
+             <li class="page-item"><a class="page-link" href="">&laquo; first</a></li>
+             <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">{{ page.previous_page_number }}</a></li>
+        {% endif %}
+        {% if all == '' %}
+        <li class="page-item"><a class="page-link link-dark" href="#">{{ page.number }}</a></li>
+        {% endif %}
+        {% if page.has_next and all == '' %}
+             <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">{{ page.next_page_number }}</a></li>
+             <li class="page-item"><a class="page-link" href="?page={{ page.paginator.num_pages }}">last &raquo;</a></li>
+        {% endif %}
+
+        {# Пагинация, если применены фильтры #}
+        {% if page.has_previous and all != '' %}
+             <li class="page-item"><a class="page-link" href="{{ all }}&page=1">&laquo; first</a></li>
+             <li class="page-item"><a class="page-link" href="{{ all }}&page={{ page.previous_page_number }}">{{ page.previous_page_number }}</a></li>
+        {% endif %}
+        {% if all != '' %}
+        <li class="page-item"><a class="page-link link-dark" href="#">{{ page.number }}</a></li>
+        {% endif %}
+        {% if page.has_next and all != '' %}
+             <li class="page-item"><a class="page-link" href="{{ all }}&page={{ page.next_page_number }}">{{ page.next_page_number }}</a></li>
+             <li class="page-item"><a class="page-link" href="{{ all }}&page={{ page.paginator.num_pages }}">last &raquo;</a></li>
+        {% endif %}
+  </ul>
+</nav>
+</div>
+{% endblock %}
